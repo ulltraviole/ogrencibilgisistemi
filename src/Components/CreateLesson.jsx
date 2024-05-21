@@ -48,7 +48,7 @@ export default function CreateLesson() {
       <input
         name="lesson"
         type="text"
-        className="form-control"
+        className="form-control p-3"
         placeholder="Sistem Analizi ve Tasarımı"
         autoComplete="off"
         required
@@ -60,7 +60,7 @@ export default function CreateLesson() {
       <input
         name="code"
         type="text"
-        className="form-control"
+        className="form-control p-3"
         placeholder="BIL100"
         autoComplete="off"
         required
@@ -73,7 +73,7 @@ export default function CreateLesson() {
       <input
         name="email"
         type="email"
-        className="form-control"
+        className="form-control p-3"
         placeholder="k.adi@kurumunuz.edu.tr"
         autoComplete="off"
         required
@@ -82,14 +82,14 @@ export default function CreateLesson() {
       <input
         name="kredi"
         type="number"
-        className="form-control"
+        className="form-control p-3"
         placeholder="3"
         autoComplete="off"
         required
       />
       <input
         type="submit"
-        className="btn btn-primary mt-1 container-fluid"
+        className="btn btn-primary p-3 mt-1 container-fluid"
         value="Ders Oluştur"
       />
     </form>

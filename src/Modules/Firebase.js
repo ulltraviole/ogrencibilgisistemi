@@ -19,7 +19,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app); // exporting auth instance for sign - in/up
-export const setAuthLevel = httpsCallable(getFunctions(app), "setAuthLevel");
 export const createUser = httpsCallable(getFunctions(app), "createUser");
 export const getLecturerUID = httpsCallable(
   getFunctions(app),

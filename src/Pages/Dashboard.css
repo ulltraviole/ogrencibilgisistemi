@@ -1,0 +1,20 @@
+/* Dashboard.css */
+
+@media (max-width: 768px) {
+  .d-flex.bg-dark .d-flex.flex-column {
+    margin-left: -300px;
+  }
+
+  .d-flex.bg-dark .d-flex.flex-column.active {
+    margin-left: 0;
+  }
+
+  .container.mt-3 {
+    margin-left: 0;
+    transition: margin 0.3s ease-in-out;
+  }
+
+  .container.mt-3.active {
+    margin-left: 300px;
+  }
+}

@@ -54,7 +54,7 @@ export default function BindLessonToStudent() {
     <form
       id="bindLessonToStudentForm"
       onSubmit={handleSubmit}
-      className="container-fluid px-1"
+      className="container-fluid px-1 p-3"
     >
       <label htmlFor="email">
         Derse kaydetmek istediğiniz öğrencinizin e-posta adresini giriniz.
@@ -71,7 +71,7 @@ export default function BindLessonToStudent() {
         form="bindLessonToStudentForm"
         name="lesson"
         id="lesson"
-        className="form-select mt-1"
+        className="form-select mt-1 p-3"
       >
         {lessons.map((lesson) => {
           return (
@@ -83,7 +83,7 @@ export default function BindLessonToStudent() {
       </select>
       <input
         type="submit"
-        className="btn btn-primary mt-1 container-fluid"
+        className="btn btn-primary p-3 mt-1 container-fluid"
         value={"Ders Ekle"}
       />
     </form>

@@ -4,30 +4,6 @@ const { https } = require("firebase-functions/v2");
 
 admin.initializeApp();
 
-exports.setAuthLevel = functions.https.onCall((data, context) => {
-  const email = data.email;
-  const authLevel = data.authLevel;
-  if (!["1", "2", "3"].includes(authLevel)) {
-    throw new https.HttpsError("invalid-argument");
-  }
-  return admin
-    .auth()
-    .getUserByEmail(email)
-    .then((user) => {
-      return admin.auth().setCustomUserClaims(user.uid, {
-        authLevel: authLevel,
-      });
-    })
-    .then(() => {
-      return {
-        message: `Success! ${email}'s auth level is ${authLevel} now.`,
-      };
-    })
-    .catch((err) => {
-      throw err;
-    });
-});
-
 exports.createUser = functions.https.onCall((data, context) => {
   if (!["1", "2", "3"].includes(data.authLevel)) {
     throw new https.HttpsError("invalid-argument");
@@ -83,10 +59,6 @@ exports.getUsers = functions.https.onCall((data, context) => {
     .catch((err) => {
       throw err;
     });
-});
-
-exports.updateUser = functions.https.onCall((data, context) => {
-  return admin.auth().getUser();
 });
 
 exports.getDisplayNameFromUID = functions.https.onCall((data, context) => {

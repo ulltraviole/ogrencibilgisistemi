@@ -24,7 +24,7 @@ export default function ListStudentsLessons(props) {
 
   return (
     <div className="container-fluid px-1">
-      <table className="table table-striped text-center">
+      <table className="table table-dark table-striped text-center">
         <thead>
           <tr>
             <th>Ders Kodu</th>
@@ -44,7 +44,10 @@ export default function ListStudentsLessons(props) {
           })}
         </tbody>
       </table>
-      <button className="btn btn-primary container-fluid" onClick={handleClick}>
+      <button
+        className="btn btn-primary p-3 container-fluid"
+        onClick={handleClick}
+      >
         Aldığım Dersleri Getir
       </button>
     </div>

@@ -32,7 +32,7 @@ export default function ListLecturers() {
   };
   return (
     <div className="container-fluid px-1">
-      <table className="table table-striped text-center">
+      <table className="table table-dark table-striped text-center">
         <thead>
           <tr>
             <th>Adı Soyadı</th>
@@ -56,7 +56,7 @@ export default function ListLecturers() {
           })}
         </tbody>
       </table>
-      <button className="btn btn-primary container-fluid" onClick={handleClick}>
+      <button className="btn btn-primary p-3 container-fluid" onClick={handleClick}>
         Tüm Akademisyenleri Getir
       </button>
     </div>

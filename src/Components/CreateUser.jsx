@@ -37,12 +37,12 @@ export default function CreateUser() {
       <input
         name="displayName"
         type="text"
-        className="form-control"
+        className="form-control p-3"
         placeholder="Ad Soyad"
         required
       />
       <label htmlFor="authlevel">Yetki Seviyesi</label>
-      <select form="form" name="authlevel" className="form-select">
+      <select form="form" name="authlevel" className="form-select p-3">
         <option value="1">Öğrenci</option>
         <option value="2">Akademisyen</option>
         <option value="3">Yönetici</option>
@@ -51,7 +51,7 @@ export default function CreateUser() {
       <input
         name="email"
         type="email"
-        className="form-control"
+        className="form-control p-3"
         placeholder="k.adi@kurumunuz.edu.tr"
         autoComplete="off"
         required
@@ -60,13 +60,13 @@ export default function CreateUser() {
       <input
         name="password"
         type="password"
-        className="form-control"
+        className="form-control p-3"
         placeholder="******"
         required
       />
       <input
         type="submit"
-        className="btn btn-primary mt-1 container-fluid"
+        className="btn btn-primary p-3 mt-1 container-fluid"
         value="Kullanıcı Oluştur"
       />
     </form>

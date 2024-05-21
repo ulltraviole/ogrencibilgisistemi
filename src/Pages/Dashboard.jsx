@@ -1,67 +1,207 @@
+import { auth } from "../Modules/Firebase";
+import { signOut } from "firebase/auth";
 import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
+import "./Dashboard.css"; // Add your custom CSS file here
 
 // Yönetici Componentleri
-
 import CreateLesson from "../Components/CreateLesson";
 import ListLessons from "../Components/ListLessons";
-import SetAuthLevel from "../Components/SetAuthLevel";
 import CreateUser from "../Components/CreateUser";
 import ListLecturers from "../Components/ListLecturers";
 
 // Akademisyen Componentleri
-
 import ListStudents from "../Components/ListStudents";
 import BindLessonToStudent from "../Components/BindLessonToStudent";
 import ListLecturersLessons from "../Components/ListLecturersLessons";
 
 // Öğrenci Componentleri
-
 import ListStudentsLessons from "../Components/ListStudentsLessons";
 
 export default function Dashboard() {
   const [authLevel, user] = useOutletContext();
-  switch (authLevel) {
-    case "3":
-      return (
-        <div className="container-fluid">
-          <div className="d-flex mx-auto">
-            <ListLecturers />
-          </div>
-          <div className="d-flex mx-auto">
-            <ListLessons />
-          </div>
-          <div className="d-flex mx-auto">
-            <CreateUser />
-            <CreateLesson />
-          </div>
-          <div className="d-flex mx-auto">
-            <SetAuthLevel />
-          </div>
+  const [showCreateLesson, setShowCreateLesson] = useState(false);
+  const [showListLessons, setShowListLessons] = useState(false);
+  const [showCreateUser, setShowCreateUser] = useState(false);
+  const [showListLecturers, setShowListLecturers] = useState(false);
+  const [showListStudents, setShowListStudents] = useState(false);
+  const [showBindLessonToStudent, setShowBindLessonToStudent] = useState(false);
+  const [showListLecturersLessons, setShowListLecturersLessons] =
+    useState(false);
+  const [showListStudentsLessons, setShowListStudentsLessons] = useState(false);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const hideAll = () => {
+    setShowCreateLesson(false);
+    setShowListLessons(false);
+    setShowCreateUser(false);
+    setShowListLecturers(false);
+    setShowListStudents(false);
+    setShowBindLessonToStudent(false);
+    setShowListLecturersLessons(false);
+    setShowListStudentsLessons(false);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  return (
+    <div className="d-flex bg-dark">
+      <div
+        className={`d-flex flex-column flex-shrink-0 text-white bg-dark pt-3 shadow rounded ${
+          sidebarOpen ? "active" : ""
+        }`}
+        style={{
+          width: 300,
+          height: "100vh",
+          transition: "margin 0.3s ease-in-out",
+        }}
+      >
+        <div className="w-100 text-center mx-auto">
+          <strong>Öğrenci Bilgi Sistemi</strong>
         </div>
-      );
-    case "2":
-      return (
-        <div className="container-fluid">
-          <div className="d-flex mx-auto">
-            <ListStudents />
+        <hr />
+        <ul className="nav nav-pills flex-column mb-auto pl-3">
+          {authLevel === "3" && (
+            <div>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowListLecturers(true);
+                  }}
+                >
+                  Akademisyen Listesi
+                </span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowListLessons(true);
+                  }}
+                >
+                  Ders Listesi
+                </span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowCreateUser(true);
+                  }}
+                >
+                  Kullanıcı Oluştur
+                </span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowCreateLesson(true);
+                  }}
+                >
+                  Ders Oluştur
+                </span>
+              </li>
+            </div>
+          )}
+          {authLevel === "2" && (
+            <div>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowListStudents(true);
+                  }}
+                >
+                  Öğrenci Listesi
+                </span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowListLecturersLessons(true);
+                  }}
+                >
+                  Verdiğim Dersler Listesi
+                </span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowBindLessonToStudent(true);
+                  }}
+                >
+                  Öğrenciye Ders Ekle
+                </span>
+              </li>
+            </div>
+          )}
+          {authLevel === "1" && (
+            <div>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowListStudentsLessons(true);
+                  }}
+                >
+                  Aldığım Dersler
+                </span>
+              </li>
+            </div>
+          )}
+          <div>
+            <li className="nav-item">
+              <span className="nav-link text-white" onClick={handleSignOut}>
+                Çıkış Yap
+              </span>
+            </li>
           </div>
-          <div className="d-flex mx-auto">
-            <ListLecturersLessons uid={user.uid} />
-          </div>
-          <div className="d-flex mx-auto">
-            <BindLessonToStudent />
-          </div>
+        </ul>
+        <hr />
+        <div className="text-center pb-3">
+          <strong>{user.email}</strong>
         </div>
-      );
-    case "1":
-      return (
-        <div className="container-fluid">
-          <div className="d-flex mx-auto">
-            <ListStudentsLessons email={user.email} />
-          </div>
-        </div>
-      );
-    default:
-      return "Loading...";
-  }
+      </div>
+
+      <main className="container-fluid text-white mt-3">
+        <button
+          className="btn btn-primary d-md-none mb-3 w-100"
+          onClick={toggleSidebar}
+        >
+          İşlem Menüsü
+        </button>
+        {showListLecturers && <ListLecturers />}
+        {showListLessons && <ListLessons />}
+        {showCreateUser && <CreateUser />}
+        {showCreateLesson && <CreateLesson />}
+        {showListStudents && <ListStudents />}
+        {showListLecturersLessons && <ListLecturersLessons uid={user.uid} />}
+        {showBindLessonToStudent && <BindLessonToStudent />}
+        {showListStudentsLessons && <ListStudentsLessons email={user.email} />}
+      </main>
+    </div>
+  );
 }

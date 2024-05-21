@@ -26,7 +26,7 @@ export default function ListLessons() {
 
   return (
     <div className="container-fluid px-1">
-      <table className="table table-striped text-center">
+      <table className="table table-dark table-striped text-center">
         <thead>
           <tr>
             <th>Ders Kodu</th>
@@ -48,7 +48,7 @@ export default function ListLessons() {
           })}
         </tbody>
       </table>
-      <button className="btn btn-primary container-fluid" onClick={handleClick}>
+      <button className="btn btn-primary p-3 container-fluid" onClick={handleClick}>
         Tüm Dersleri Getir
       </button>
     </div>

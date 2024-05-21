@@ -37,21 +37,21 @@ export default function SignIn() {
       icon: "success",
       titleText: "Başarılı",
       text: "Başarıyla giriş yaptınız. Lütfen bekleyiniz.",
-      timer: 3000,
+      timer: 2500,
       timerProgressBar: true,
     }).then(() => {
       navigate("/dashboard");
     });
   } else if (user === null) {
     return (
-      <div className={styles.LoginCollapser}>
+      <div className={`${styles.LoginCollapser} bg-dark`}>
         <span>Kullanıcı Doğrulama Arayüzü</span>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="shadow">
           <input
             name="email"
             type="email"
             placeholder="adiniz@kurumunuz.edu.tr"
-            className={styles.tckn}
+            className={`${styles.tckn} shadow rounded bg-dark`}
             autoComplete="off"
             required
             autoFocus
@@ -60,10 +60,14 @@ export default function SignIn() {
             name="password"
             type="password"
             placeholder="******"
-            className={styles.pass}
+            className={`${styles.pass} mt-2 rounded bg-dark shadow`}
             required
           />
-          <input type="submit" value="Giriş yap" />
+          <input
+            type="submit"
+            className="btn btn-primary mt-2 shadow"
+            value="Giriş Yap"
+          />
         </form>
       </div>
     );
