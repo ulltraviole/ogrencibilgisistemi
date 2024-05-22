@@ -1,8 +1,19 @@
 import { doc, setDoc } from "firebase/firestore";
-import { db, getLecturerUID } from "../Modules/Firebase";
+import { db, getLecturerUID, getUsers } from "../Modules/Firebase";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
 export default function CreateLesson() {
+  const [lecturers, setLecturers] = useState([]);
+  useEffect(() => {
+    getUsers({ authLevel: "2" }).then((lecturers) => {
+      setLecturers([]);
+      lecturers.data.forEach((lecturer) => {
+        setLecturers((lecturers) => [...lecturers, lecturer]);
+      });
+    });
+  }, []);
+
   async function handleSubmit(e) {
     e.preventDefault();
     function getValue(elName) {
@@ -67,17 +78,24 @@ export default function CreateLesson() {
         autoFocus
       />
 
-      <label htmlFor="email">
-        Dersi verecek olan akademisyenin e-posta adresi
-      </label>
-      <input
+      <label htmlFor="email">Dersi verecek olan akademisyeni seçiniz.</label>
+      {/* <input
         name="email"
         type="email"
         className="form-control p-3"
         placeholder="k.adi@kurumunuz.edu.tr"
         autoComplete="off"
         required
-      />
+      /> */}
+      <select className="form-control p-3" name="email" id="email" required>
+        {lecturers.map((lecturer) => {
+          return (
+            <option key={lecturer.uid} value={lecturer.email}>
+              {lecturer.email}
+            </option>
+          );
+        })}
+      </select>
       <label htmlFor="kredi">Dersin kredisi</label>
       <input
         name="kredi"

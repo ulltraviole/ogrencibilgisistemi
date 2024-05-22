@@ -90,6 +90,17 @@ export default function Dashboard() {
                   className="nav-link text-white"
                   onClick={() => {
                     hideAll();
+                    setShowListStudents(true);
+                  }}
+                >
+                  Öğrenci Listesi
+                </span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
                     setShowListLessons(true);
                   }}
                 >
@@ -181,8 +192,11 @@ export default function Dashboard() {
           </div>
         </ul>
         <hr />
-        <div className="text-center pb-3">
-          <strong>{user.email}</strong>
+        <div className="d-flex flex-column pb-3 text-center">
+          <strong>Ad Soyad</strong>
+          <span>{user.displayName}</span>
+          <strong>E-Posta Adresi</strong>
+          <span>{user.email}</span>
         </div>
       </div>
 

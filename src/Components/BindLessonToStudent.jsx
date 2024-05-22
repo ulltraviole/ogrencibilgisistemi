@@ -9,10 +9,35 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../Modules/Firebase";
+import { db, getUsers } from "../Modules/Firebase";
 import Swal from "sweetalert2";
 
 export default function BindLessonToStudent() {
+  const [lessons, setLessons] = useState([]);
+  const [students, setStudents] = useState([]);
+  useEffect(() => {
+    getDocs(query(collection(db, "dersler")))
+      .then((querySnapshot) => {
+        setLessons([]);
+        querySnapshot.forEach((doc) => {
+          setLessons((lessons) => [
+            ...lessons,
+            { id: doc.id, data: doc.data() },
+          ]);
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+  useEffect(() => {
+    getUsers({ authLevel: "1" }).then((students) => {
+      setStudents([]);
+      students.data.forEach((student) => {
+        setStudents((students) => [...students, student]);
+      });
+    });
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
     function getValue(elName) {
@@ -32,23 +57,6 @@ export default function BindLessonToStudent() {
         console.err(err);
       });
   };
-  const [lessons, setLessons] = useState([]);
-
-  useEffect(() => {
-    getDocs(query(collection(db, "dersler")))
-      .then((querySnapshot) => {
-        setLessons([]);
-        querySnapshot.forEach((doc) => {
-          setLessons((lessons) => [
-            ...lessons,
-            { id: doc.id, data: doc.data() },
-          ]);
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
 
   return (
     <form
@@ -57,15 +65,17 @@ export default function BindLessonToStudent() {
       className="container-fluid px-1 p-3"
     >
       <label htmlFor="email">
-        Derse kaydetmek istediğiniz öğrencinizin e-posta adresini giriniz.
+        Derse kaydetmek istediğiniz öğrenciyi seçiniz.
       </label>
-      <input
-        type="email"
-        className="form-control"
-        name="email"
-        id="email"
-        required
-      />
+      <select className="form-control p-3" name="email" id="email" required>
+        {students.map((student) => {
+          return (
+            <option key={student.uid} value={student.email}>
+              {student.email}
+            </option>
+          );
+        })}
+      </select>
       <label htmlFor="lesson">Ders Seçiniz</label>
       <select
         form="bindLessonToStudentForm"

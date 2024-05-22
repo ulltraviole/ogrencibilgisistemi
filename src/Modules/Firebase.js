@@ -1,12 +1,8 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -16,9 +12,11 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app); // exporting auth instance for sign - in/up
+
+export const auth = getAuth(app); // auth instance
+export const db = getFirestore(app); // db instance
+
 export const createUser = httpsCallable(getFunctions(app), "createUser");
 export const getLecturerUID = httpsCallable(
   getFunctions(app),
@@ -33,4 +31,3 @@ export const getDisplayNameFromUID = httpsCallable(
   getFunctions(app),
   "getDisplayNameFromUID"
 );
-export const db = getFirestore(app);
