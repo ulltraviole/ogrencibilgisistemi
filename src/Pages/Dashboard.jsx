@@ -17,12 +17,14 @@ import ListLecturersLessons from "../Components/ListLecturersLessons";
 
 // Öğrenci Componentleri
 import ListStudentsLessons from "../Components/ListStudentsLessons";
+import DeleteStudent from "../Components/DeleteStudent";
 
 export default function Dashboard() {
   const [authLevel, user] = useOutletContext();
   const [showCreateLesson, setShowCreateLesson] = useState(false);
   const [showListLessons, setShowListLessons] = useState(false);
   const [showCreateUser, setShowCreateUser] = useState(false);
+  const [showDeleteStudent, setShowDeleteStudent] = useState(false);
   const [showListLecturers, setShowListLecturers] = useState(false);
   const [showListStudents, setShowListStudents] = useState(false);
   const [showBindLessonToStudent, setShowBindLessonToStudent] = useState(false);
@@ -36,6 +38,7 @@ export default function Dashboard() {
     setShowCreateLesson(false);
     setShowListLessons(false);
     setShowCreateUser(false);
+    setShowDeleteStudent(false);
     setShowListLecturers(false);
     setShowListStudents(false);
     setShowBindLessonToStudent(false);
@@ -116,6 +119,17 @@ export default function Dashboard() {
                   }}
                 >
                   Kullanıcı Oluştur
+                </span>
+              </li>
+              <li className="nav-item">
+                <span
+                  className="nav-link text-white"
+                  onClick={() => {
+                    hideAll();
+                    setShowDeleteStudent(true);
+                  }}
+                >
+                  Öğrenci Sil
                 </span>
               </li>
               <li className="nav-item">
@@ -210,6 +224,7 @@ export default function Dashboard() {
         {showListLecturers && <ListLecturers />}
         {showListLessons && <ListLessons />}
         {showCreateUser && <CreateUser />}
+        {showDeleteStudent && <DeleteStudent />}
         {showCreateLesson && <CreateLesson />}
         {showListStudents && <ListStudents />}
         {showListLecturersLessons && <ListLecturersLessons uid={user.uid} />}

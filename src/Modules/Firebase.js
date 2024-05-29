@@ -27,7 +27,9 @@ export const bindLessonToLecturer = httpsCallable(
   "bindLessonToLecturer"
 );
 export const getUsers = httpsCallable(getFunctions(app), "getUsers");
+export const getUser = httpsCallable(getFunctions(app), "getUser");
 export const getDisplayNameFromUID = httpsCallable(
   getFunctions(app),
   "getDisplayNameFromUID"
 );
+export const deleteUser = httpsCallable(getFunctions(app), "deleteUser");

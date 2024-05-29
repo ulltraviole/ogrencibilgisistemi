@@ -1,19 +1,34 @@
+import { useState } from "react";
 import { createUser } from "../Modules/Firebase";
-
-import Swal from "sweetalert2"; // For inform user.
+import Swal from "sweetalert2";
 
 export default function CreateUser() {
-  async function handleSubmit(e) {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    function getValue(elName) {
-      return e.target.elements.namedItem(elName).value;
+
+    setLoading(true); // İşlem başlamadan önce loading durumunu true yap
+
+    const getValue = (elName) => e.target.elements.namedItem(elName).value;
+
+    const email = getValue("email");
+    const password = getValue("password");
+    const displayName = getValue("displayName");
+    const authLevel = getValue("authlevel");
+
+    // E-posta adresinin gazi.edu.tr alan adına sahip olup olmadığını kontrol et
+    if (!email.endsWith("@gazi.edu.tr")) {
+      Swal.fire({
+        icon: "error",
+        titleText: "Hata",
+        text: "Lütfen geçerli bir gazi.edu.tr e-posta adresi girin.",
+      });
+      setLoading(false); // Hata durumunda loading durumunu false yap
+      return;
     }
-    createUser({
-      email: getValue("email"),
-      password: getValue("password"),
-      displayName: getValue("displayName"),
-      authLevel: getValue("authlevel"),
-    })
+
+    createUser({ email, password, displayName, authLevel })
       .then((result) => {
         console.log(result);
         Swal.fire({
@@ -29,8 +44,12 @@ export default function CreateUser() {
           titleText: "Hata",
           text: "Kullanıcı oluşturulamadı.",
         });
+      })
+      .finally(() => {
+        setLoading(false); // İşlem tamamlandığında loading durumunu false yap
       });
-  }
+  };
+
   return (
     <form id="form" onSubmit={handleSubmit} className="container-fluid px-1">
       <label htmlFor="displayName">Tam Adı</label>
@@ -39,6 +58,7 @@ export default function CreateUser() {
         type="text"
         className="form-control p-3"
         placeholder="Ad Soyad"
+        minLength="3"
         required
       />
       <label htmlFor="authlevel">Yetki Seviyesi</label>
@@ -52,7 +72,7 @@ export default function CreateUser() {
         name="email"
         type="email"
         className="form-control p-3"
-        placeholder="k.adi@kurumunuz.edu.tr"
+        placeholder="k.adi@gazi.edu.tr"
         autoComplete="off"
         required
       />
@@ -62,12 +82,14 @@ export default function CreateUser() {
         type="password"
         className="form-control p-3"
         placeholder="******"
+        minLength="6"
         required
       />
       <input
         type="submit"
         className="btn btn-primary p-3 mt-1 container-fluid"
-        value="Kullanıcı Oluştur"
+        value={loading ? "İşleniyor..." : "Kullanıcı Oluştur"}
+        disabled={loading} // İşlem sırasında butonun tıklanmasını engelle
       />
     </form>
   );
