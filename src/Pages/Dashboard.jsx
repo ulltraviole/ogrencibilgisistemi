@@ -227,7 +227,7 @@ export default function Dashboard() {
         {showDeleteStudent && <DeleteStudent />}
         {showCreateLesson && <CreateLesson />}
         {showListStudents && <ListStudents />}
-        {showListLecturersLessons && <ListLecturersLessons uid={user.uid} />}
+        {showListLecturersLessons && <ListLecturersLessons lecturer={user} />}
         {showBindLessonToStudent && <BindLessonToStudent />}
         {showListStudentsLessons && <ListStudentsLessons email={user.email} />}
       </main>

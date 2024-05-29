@@ -69,9 +69,12 @@ export default function ListStudents() {
                   <td>{student.displayName}</td>
                   <td>{student.email}</td>
                   <td>
-                    <ul>
+                    <ul className="list-group">
                       {student.AldigiDersler.map((ders, index) => (
-                        <li key={index}>
+                        <li
+                          className="list-group-item bg-dark text-white"
+                          key={index}
+                        >
                           {ders.dersAdi} (Şube {ders.subeNo})
                         </li>
                       ))}

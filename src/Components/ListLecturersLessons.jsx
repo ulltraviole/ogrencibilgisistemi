@@ -1,16 +1,15 @@
 import { collection, getDocs } from "firebase/firestore";
-import { db, getUser } from "../Modules/Firebase";
+import { db } from "../Modules/Firebase";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
-export default function ListLecturersLessons({ lecturer, uid }) {
+export default function ListLecturersLessons({ lecturer }) {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState();
-
+  const [dersiAlanlar, setDersiAlanlar] = useState([]);
   useEffect(() => {
     const fetchLessons = async () => {
-      if (!lecturer && !uid) {
+      if (!lecturer || !lecturer.uid) {
         Swal.fire({
           icon: "error",
           titleText: "Hata",
@@ -18,29 +17,18 @@ export default function ListLecturersLessons({ lecturer, uid }) {
         });
         return;
       }
-      if (!lecturer && uid) {
-        getUser({ uid: uid }).then((result) => {
-          setUser(result.data);
-        });
-      }
+
       setLoading(true);
       setLessons([]); // Yeni akademisyen seçildiğinde tabloyu boşalt
       try {
         const querySnapshot = await getDocs(collection(db, "dersler"));
         const lessonsData = [];
         querySnapshot.forEach((doc) => {
-          let filteredSubeler;
           const data = doc.data();
-          if (lecturer) {
-            filteredSubeler = data.Subeler.filter(
-              (sube) => sube.AkademisyenUID === lecturer.uid
-            );
-          }
-          if (uid) {
-            filteredSubeler = data.Subeler.filter(
-              (sube) => sube.AkademisyenUID === uid
-            );
-          }
+          const filteredSubeler = data.Subeler.filter(
+            (sube) => sube.AkademisyenUID === lecturer.uid
+          );
+
           if (filteredSubeler.length > 0) {
             lessonsData.push({
               id: doc.id,
@@ -62,7 +50,7 @@ export default function ListLecturersLessons({ lecturer, uid }) {
       }
     };
     fetchLessons();
-  }, [lecturer, uid]);
+  }, [lecturer]);
 
   return (
     <div className="container-fluid px-1">
@@ -73,18 +61,11 @@ export default function ListLecturersLessons({ lecturer, uid }) {
           </h2>
         </div>
       )}
-      {uid && user && (
-        <div>
-          <h2 className="p-3">
-            {user.displayName} - {user.email}
-          </h2>
-        </div>
-      )}
       {/* Akademisyen bilgilerini gösteriyoruz */}
       {loading ? (
         <div className="d-flex justify-content-center my-3">
           <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
+            <span className="visually-hidden">Yükleniyor...</span>
           </div>
         </div>
       ) : (
@@ -106,7 +87,23 @@ export default function ListLecturersLessons({ lecturer, uid }) {
                   <td>{lesson.data.DersKredisi}</td>
                   <td>
                     {lesson.subeler.map((sube) => (
-                      <span key={sube.SubeNo} className="badge bg-primary mx-1">
+                      <span
+                        key={sube.SubeNo}
+                        style={{ cursor: "pointer" }}
+                        className="badge bg-primary mx-1"
+                        onClick={() => {
+                          setDersiAlanlar([]);
+                          if (!sube.DersiAlanlar) {
+                            Swal.fire({
+                              titleText: "Bilgilendirme",
+                              icon: "info",
+                              text: "Bu şubede herhangi bir öğrenci bulunmuyor.",
+                            });
+                          } else {
+                            setDersiAlanlar(sube.DersiAlanlar);
+                          }
+                        }}
+                      >
                         Şube {sube.SubeNo}
                       </span>
                     ))}
@@ -115,6 +112,26 @@ export default function ListLecturersLessons({ lecturer, uid }) {
               ))}
             </tbody>
           </table>
+          {dersiAlanlar?.length > 0 && (
+            <table className="table table-dark table-striped text-center">
+              <thead>
+                <tr>
+                  <th>Bu Dersi Alan Öğrencilerin Listesi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dersiAlanlar.map((ogrenci) => {
+                  return (
+                    <tr key={ogrenci}>
+                      <td>
+                        <span>{ogrenci}</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </>
       )}
     </div>

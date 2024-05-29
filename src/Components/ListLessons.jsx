@@ -33,14 +33,14 @@ export default function ListLessons() {
 
   return (
     <div className="container-fluid px-1">
-      <table className="table table-dark table-striped text-center">
+      <table className="table table-dark text-center">
         <thead>
           <tr>
             <th>Ders Kodu</th>
             <th>Ders Adı</th>
             <th>Dersin Kredisi</th>
-            <th>Şube No</th>
-            <th>Akademisyen Adı</th>
+            <th>Şube Numarası</th>
+            <th>Dersi Veren Akademisyen</th>
           </tr>
         </thead>
         <tbody>
