@@ -19,4 +19,4 @@ npm install --g serve
 serve
 ```
  
-komutlarını sırasıyla çalıştırınız.
+komutlarını sırasıyla çalıştırınız. (Sisteminizde Node.js kurulu olmalıdır.)
