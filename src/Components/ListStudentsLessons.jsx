@@ -1,11 +1,13 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../Modules/Firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ListStudentsLessons(props) {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    console.log(lessons);
+  }, [lessons]);
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -16,13 +18,17 @@ export default function ListStudentsLessons(props) {
       lessonsSnapshot.forEach((doc) => {
         const lessonData = doc.data();
         lessonData.Subeler.forEach((sube, index) => {
-          if (sube.DersiAlanlar && sube.DersiAlanlar.includes(props.email)) {
-            filteredLessons.push({
-              id: doc.id,
-              data: lessonData,
-              subeNo: index + 1,
+          sube.DersiAlanlar &&
+            sube.DersiAlanlar.forEach((d) => {
+              if (d.mail === props.email) {
+                filteredLessons.push({
+                  id: doc.id,
+                  data: lessonData,
+                  subeNo: index + 1,
+                  devamsizlik: d.devamsizlik,
+                });
+              }
             });
-          }
         });
       });
 
@@ -63,6 +69,7 @@ export default function ListStudentsLessons(props) {
                 <th>Ders Adı</th>
                 <th>Dersin Kredisi</th>
                 <th>Şube</th>
+                <th>Devamsızlık</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +80,16 @@ export default function ListStudentsLessons(props) {
                     <td>{lesson.data.DersAdi}</td>
                     <td>{lesson.data.DersKredisi}</td>
                     <td>{`Şube ${lesson.subeNo}`}</td>
+
+                    {lesson.devamsizlik > 4 ? (
+                      <td style={{ color: "red" }}>
+                        {lesson.devamsizlik} Hafta
+                      </td>
+                    ) : (
+                      <td style={{ color: "white" }}>
+                        {lesson.devamsizlik} Hafta
+                      </td>
+                    )}
                   </tr>
                 );
               })}

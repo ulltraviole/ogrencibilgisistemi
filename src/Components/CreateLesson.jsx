@@ -112,7 +112,7 @@ export default function CreateLesson() {
             required
             onChange={handleSubeChange}
           >
-            {[1, 2, 3].map((number) => (
+            {[1, 2, 3, 4, 5].map((number) => (
               <option key={number} value={number}>
                 {number}
               </option>

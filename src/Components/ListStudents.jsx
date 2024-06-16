@@ -20,18 +20,18 @@ export default function ListStudents() {
           querySnapshot.forEach((doc) => {
             const subeler = doc.data().Subeler || [];
             subeler.forEach((sube, index) => {
-              if (
-                sube.DersiAlanlar &&
-                sube.DersiAlanlar.includes(student.email)
-              ) {
-                courses.push({
-                  dersAdi: doc.data().DersAdi,
-                  subeNo: index + 1,
+              sube.DersiAlanlar &&
+                sube.DersiAlanlar.forEach((d) => {
+                  if (d.mail === student.email) {
+                    courses.push({
+                      dersAdi: doc.data().DersAdi,
+                      subeNo: index + 1,
+                      devamsizlik: d.devamsizlik,
+                    });
+                  }
                 });
-              }
             });
           });
-
           return { ...student, AldigiDersler: courses };
         })
       );
@@ -72,10 +72,13 @@ export default function ListStudents() {
                     <ul className="list-group">
                       {student.AldigiDersler.map((ders, index) => (
                         <li
-                          className="list-group-item bg-dark text-white"
+                          className="list-group-item bg-dark text-white d-flex justify-content-evenly"
                           key={index}
                         >
                           {ders.dersAdi} (Şube {ders.subeNo})
+                          <div className="badge bg-warning">
+                            Devamsızlık: {ders.devamsizlik} hafta
+                          </div>
                         </li>
                       ))}
                     </ul>

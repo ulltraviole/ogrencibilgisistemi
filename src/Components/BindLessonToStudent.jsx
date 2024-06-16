@@ -60,7 +60,11 @@ export default function BindLessonToStudent() {
     const lessonData = lessonSnapshot.data();
 
     const isStudentAlreadyEnrolled = lessonData.Subeler.some(
-      (sube) => sube.DersiAlanlar && sube.DersiAlanlar.includes(email)
+      (sube) =>
+        sube.DersiAlanlar &&
+        sube.DersiAlanlar.some((da) => {
+          return da.mail.includes(email);
+        })
     );
 
     if (isStudentAlreadyEnrolled) {
@@ -77,8 +81,8 @@ export default function BindLessonToStudent() {
         return {
           ...sube,
           DersiAlanlar: sube.DersiAlanlar
-            ? [...sube.DersiAlanlar, email]
-            : [email],
+            ? [...sube.DersiAlanlar, { mail: email, devamsizlik: 0 }]
+            : [{ mail: email, devamsizlik: 0 }],
         };
       }
       return sube;
